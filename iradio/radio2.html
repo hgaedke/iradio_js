@@ -1,0 +1,62 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link href="css/styles.css" rel="stylesheet" />
+<script>
+
+/**
+ * Data class holding the name, id and url of an internet radio station.
+ */
+class PlayableAudioObject {
+  // String name:       Pretty-print name, e.g. "NDR 1"
+  // String id:         id used for internal referencing, e.g. "ndr1"
+  // String url:        URL of the source, typically sth. starting with "http://" and ending with ".mp3"
+  // String background: background color of the associated radio station button
+  constructor (name, id, url, background) {
+    this.name = name;
+    this.id = id;
+    this.url = url;
+    this.background = background;
+  }
+}
+
+// Number of radio stations selectable. Don't change this value, as the layout has been hard-coded
+// and is not flexible.
+const NUM_RADION_STATIONS = 6;
+
+/**
+ * Use this array to define your personal NUM_RADION_STATIONS radio stations.
+ */
+const PLAYABLE_AUDIO_OBJECTS = [
+  new PlayableAudioObject ("DF Kultur", "deutschlandfunk_kultur", "https://st02.sslstream.dlf.de/dlf/02/128/mp3/stream.mp3?aggregator=web", "#FFC0C0"),
+  new PlayableAudioObject ("80s 80s", "s80s80s", "https://streams.80s80s.de/web/mp3-192/homepage/?context=fHA6LTE%3D&aw_0_1st.skey=1672079069&cb=800649150&aw_0_1st.playerid=80s80s_web&aw_0_req.userConsentV2=CPkmOgAPkmOgAAFADCDECwCgAAAAAEPAAAYgAAAR7AJMNW4gC7MscGbQMIoEQIwrCQigUAEFAMLRAQAODgp2VgE-sIEACAUARgRAhwBRgQCAAASAJCIAJAiwQAAAiAQAAgAQAIQAMDAILACwMAgABANAxRCgAECQAyICIpTAgKgSCAlsqEEoKpDTCAKssAKARGwUACIJARSAAICwcAwRICViwQJMUb5ACMEKAUSoQBA0AGAAII9iIAMAAQR7FQAYAAgj2MgAwABBHsAA.YAAAAAAAAAAA&listenerid=78db33aaa319436b9b1c63cc1c4c527c", "#FFFFC0"),
+  new PlayableAudioObject ("89.0 RTL In the Mix", "rtl_itm", "https://stream.89.0rtl.de/mix/mp3-256/radioplayerHP/?=&&___cb=982984999671737", "#C0FFC0"),
+  new PlayableAudioObject ("NDR Kultur", "ndr_kultur", "http://icecast.ndr.de/ndr/ndrkultur/live/mp3/128/stream.mp3", "#C0C0C0"),
+  new PlayableAudioObject ("NDR Info", "ndrinfo", "http://icecast.ndr.de/ndr/ndrinfo/niedersachsen/mp3/128/stream.mp3", "#C0C0FF"),
+  new PlayableAudioObject ("N-Joy", "njoy", "http://icecast.ndr.de/ndr/njoy/live/mp3/128/stream.mp3", "#FFA080")
+];
+
+</script>
+
+<!--
+The code sourced out to radio.js contains the logic to create the radio button DOM elements, the audio DOM elements, and the watchdog behaviour.
+It directly references the above JavaScript definitions, therefore both belong together!
+-->
+<script src="radio.js"></script>
+
+</head>
+
+<body style="margin: 0; padding: 0" onload="onLoad ()">
+
+<div id="caption" class="info_text_cls">
+  <p>App: Internet Radio 2</p>
+</div>
+
+<!-- Layout for 6 stations (cf. NUM_RADION_STATIONS) will be inserted here through JS function createVisibleDOMObjects. -->
+
+<div id="info_text" class="info_text_cls" style="background: black; float: top">
+  <p></p>
+</div>
+
+</body>
+</html>
