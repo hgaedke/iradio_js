@@ -4,7 +4,7 @@ Internet radio website based on pure HTML / JavaScript. Comes with a FLASK-based
 This readme file contains a how-to for Windows as well as for Rasbian (running on Raspberry PI).
 
 # How-to for Windows
-![Screenshot of the internet radio app in Firefox browser on Windows.](https://github.com/hgaedke/iradio_js/docs/iradio_home_windows.jpg)
+![Screenshot of the internet radio app in Firefox browser on Windows.](/../main/docs/iradio_home_windows.jpg)
 
 ## Install and use just the internet radio
 * Clone the repository. We assume here you clone it to "c:\iradio_js".
