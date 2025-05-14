@@ -15,6 +15,7 @@ This readme file contains a how-to for Windows as well as for Rasbian (running o
 ## Install and use the local MP3 and video playback in addition
 In addition to the previous steps:
 * Install Python 2.7.16 or newer.
+* Install Flask ("pip install Flask").
 * Copy video files (.mp4) of your choice to folder "c:\iradio_js\video".
 * Copy MP3 music files of your choice to the music folder, where each music file needs to be located in an album directory, e.g. "c:\iradio_js\music\my_album\my_music.mp3". You can have multiple files per album and multiple albums as well.
 * Start the Python- and FLASK-based MediaServer:  
@@ -37,6 +38,7 @@ This assumes that you have a Raspberry PI with Rasbian OS and a touch screen att
 ## Install and use the local MP3 and video playback in addition
 In addition to the previous steps:
 * Install Python 2.7.16 or newer.
+* Install Flask ("pip install Flask").
 * Copy video files (.mp4) of your choice to folder "/video".
 * Copy MP3 music files of your choice to folder "/music", where each music file needs to be located in an album directory, e.g. "/music/my_album/my_music.mp3". You can have multiple files per album and multiple albums as well.
 * Configure the Python- and FLASK-based MediaServer to be started automatically on login, and show the internet radio automatically on login: open "/etc/xdg/lxsession/LXDE-pi/autostart" and add the following two lines:
