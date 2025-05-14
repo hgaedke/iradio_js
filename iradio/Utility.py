@@ -60,7 +60,7 @@ def getTitleURL(album, title):
     return "/music/title?album=" + album + "&title=" + title
     
     
-def getListOfVideos(videoDir):
+def getSortedListOfVideos(videoDir):
     """
     Example call: localhost:5000/video
     """
@@ -69,7 +69,7 @@ def getListOfVideos(videoDir):
     for (dirpath, dirnames, filenames) in os.walk(videoDir):
         videos.extend(filenames)
         break
-    print(str(videos))
+    videos.sort()
     return videos
     
     

@@ -52,7 +52,7 @@ function openURL (url) {
     
 def video(mediaServer):
     # get videos
-    videos = Utility.getListOfVideos(mediaServer.videoDir)
+    videos = Utility.getSortedListOfVideos(mediaServer.videoDir)
     
     # === HTML output ===
     html = """
