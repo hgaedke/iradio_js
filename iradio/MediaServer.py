@@ -46,53 +46,47 @@ class MediaServer:
         return flask.send_from_directory(MediaServer.INSTANCE.codeDir + "/images", "back.png")
         
         
-    @FLASK_APP.route('/musicFolders')
-    def musicFolders():
+    @FLASK_APP.route('/music')
+    def music():
         """
-        Returns a HTML page showing all music albums.
+        Convenience method; returns the same as showFolder() with relativeDirectory = ".".
         """
-        return Index.musicFolders(MediaServer.INSTANCE.musicDir, folderPath = ".")
+        return Index.musicFolders(MediaServer.INSTANCE.musicDir, relativeDirectory = ".")
         
         
-    @FLASK_APP.route('/music/openFolder')
-    def openFolder():
+    @FLASK_APP.route('/music/showFolder')
+    def showFolder():
         """
         Returns a HTML page which shows a folder or play view, depending on the folder contents.
+        If there is at least 1 directory contained in the relativeDirectory (given as argument), a folder view is shown.
+        Otherwise, a play album view is shown.
         
-        Example call: localhost:5000/music/openFolder?folderPath=./80er
+        arg relativeDirectory Path relative to the root media directory.
+        
+        Example call: localhost:5000/music/showFolder?relativeDirectory=./80er
         """
         argDict = flask.request.args
-        folderPath = argDict["folderPath"]
+        relativeDirectory = argDict["relativeDirectory"]
         
-        return Index.musicFolders(MediaServer.INSTANCE.musicDir, folderPath = folderPath)
+        return Index.musicFolders(MediaServer.INSTANCE.musicDir, relativeDirectory = relativeDirectory)
         
         
-    @FLASK_APP.route('/music/playAlbum')
-    def playAlbum():
+    @FLASK_APP.route('/music/stream')
+    def streamMusic():
         """
-        Returns a HTML page which auto-plays all titles of the given album.
-        
-        Example call: localhost:5000/playAlbum?album=80er
-        """
-        argDict = flask.request.args
-        album = argDict["album"]
-        
-        return PlayAlbum.create(MediaServer.INSTANCE.musicDir, album)
-        
-        
-    @FLASK_APP.route('/music/title')
-    def getTitleOfAlbum():
-        """
-        Returns the given title as file. This title can be used by some other HTML page to be played,
+        Returns a certain song as file. This song can be used by some other HTML page to be played,
         e.g. via an audio tag.
         
-        Example call: localhost:5000/title?album=80er&title=06%20NIK%20KERSHAW%20-%20THE%20RIDDLE.mp3
+        arg relativeDirectory Path relative to the root music directory, defining the directory where to find the file to play.
+        arg song Filename to play.
+        
+        Example call: localhost:5000/music/stream?relativeDirectory=80er&song=06%20NIK%20KERSHAW%20-%20THE%20RIDDLE.mp3
         """
         argDict = flask.request.args
-        album = argDict["album"]
-        title = argDict["title"]
+        relativeDirectory = argDict["relativeDirectory"]
+        song = argDict["song"]
         
-        return flask.send_from_directory(MediaServer.INSTANCE.musicDir + "/" + album, title)
+        return flask.send_from_directory(MediaServer.INSTANCE.musicDir + "/" + relativeDirectory, song)
         
         
     @FLASK_APP.route('/video')
@@ -104,13 +98,15 @@ class MediaServer:
         return Index.video(MediaServer.INSTANCE)
         
         
-    @FLASK_APP.route('/video/title')
-    def getVideoTitle():
+    @FLASK_APP.route('/video/stream')
+    def streamVideo():
         """
         Returns the given video as file. This video can be used by some other HTML page to be played,
         e.g. via a video tag.
         
-        Example call: localhost:5000/title?file=So%20funktioniert%20ein%Muskel.mp4
+        arg file Filename of the file inside the root video directory to play.
+        
+        Example call: localhost:5000/video/stream?file=So%20funktioniert%20ein%Muskel.mp4
         """
         argDict = flask.request.args
         fileArg = argDict["file"]

@@ -29,71 +29,37 @@ def genericFooter():
     return html
     
     
-def getDirectoryContents(musicDir):
+def getDirectoryContents(mediaDir, reverse = False):
     """
-    Returns (list of contained dirs, list of contained files).
+    @return (sorted list of contained dirs, sorted list of contained files).
+    
+    @param mediaDir Root media (music or video) directory.
+    @param reverse If True, dirs and files are sorted in reverse order.
     """
     dirs = []
     files = []
-    for content in os.listdir(musicDir):
-        if os.path.isdir(musicDir + "/" + content):
+    for content in os.listdir(mediaDir):
+        if os.path.isdir(mediaDir + "/" + content):
             dirs.append(content)
-        if os.path.isfile(musicDir + "/" + content):
+        if os.path.isfile(mediaDir + "/" + content):
             files.append(content)
-    dirs.sort()
-    files.sort()
+    dirs.sort(reverse = reverse)
+    files.sort(reverse = reverse)
     return (dirs, files)
     
     
-def getSortedListOfAlbums(musicDir):
+def getSongURL(relativeDirectory, filename):
     """
-    Example call: localhost:5000/music/albums
+    @return the URL under which the file given by filename is accessible.
+    
+    @param relativeDirectory Relative path from the root music directory to the directory where the file is stored.
+    @param filename Filename of the file which is addressed.
     """
-    # get list of files in current directory
-    albums = []
-    for (dirpath, dirnames, filenames) in os.walk(musicDir):
-        albums.extend(dirnames)
-        break
-    albums.sort()
-    return albums
-
-    
-def getListOfTitlesOfAlbum(musicDir, album):
-    # get sorted list of files in the given album's directory
-    titles = []
-    for (dirpath, dirnames, filenames) in os.walk(musicDir + "/" + album):
-        titles.extend(filenames)
-        break
-    
-    titles.sort()
-    return titles
-    
-    
-def getTitleURL(album, title):
-    """
-    Returns the URL under which the given title of the given album is accessible as file.
-    """
-    return "/music/title?album=" + album + "&title=" + title
-    
-    
-def getSortedListOfVideos(videoDir, reverse):
-    """
-    Returns a sorted array of videos.
-    param videoDir the directory where the videos are in.
-    param reverse If true, sorting is done in reverse order.
-    Example call: localhost:5000/video
-    """
-    # get list of files in current directory
-    videos = []
-    for (dirpath, dirnames, filenames) in os.walk(videoDir):
-        videos.extend(filenames)
-        break
-    videos.sort(reverse = reverse)
-    return videos
+    return "/music/stream?relativeDirectory=" + relativeDirectory + "&song=" + filename
     
     
 def getVideoURL(video):
     """
-    Returns the URL under which the given video is accessible as file.
+    @return the URL under which the given video is accessible as file.
     """
-    return "/video/title?file=" + video
+    return "/video/stream?file=" + video

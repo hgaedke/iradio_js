@@ -1,8 +1,14 @@
 import Utility
 
 
-def create(mediaDir, album):
-    titles = Utility.getListOfTitlesOfAlbum(mediaDir, album)
+def create(mediaDir, relativeDirectory):
+    '''
+    Returns a HTML page for playing the audio files contained in relativeDirectory.
+    
+    param mediaDir Absolute path of the media root directory.
+    param relativeDirectory Path of the directory to play files from, relative to the root media directory.
+    '''
+    (dirs, songs) = Utility.getDirectoryContents(mediaDir + "/" + relativeDirectory)
     
     # === HTML output ===
     html = """
@@ -23,27 +29,27 @@ class AudioInfo {
 var audio_infos = [
     """
     
-    for i in range(len(titles)):
-        title = titles[i]
-        html += "new AudioInfo (\"" + title + "\", \"" + Utility.getTitleURL(album, title) + "\")"
+    for i in range(len(songs)):
+        song = songs[i]
+        html += "new AudioInfo (\"" + song + "\", \"" + Utility.getSongURL(relativeDirectory, song) + "\")"
         
-        if (i < len(titles) - 1):
+        if (i < len(songs) - 1):
             html += ","
         html += "\n"
         
     html += """
 ];
 
-var currently_playing = -1; // index (of audio_infos) of the currently played title
+var currently_playing = -1; // index (of audio_infos) of the currently played song
 
     """
 
-    html += "var num_titles = " + str(len(titles)) + ";\n"
+    html += "var num_titles = " + str(len(songs)) + ";\n"
     
     html += """
 
 /*!
- * Initializes the audio object and plays the first title.
+ * Initializes the audio object and plays the first song.
  */
 function onLoadLocalMedia () {
   // set ended listener
@@ -56,7 +62,7 @@ function onLoadLocalMedia () {
 }
 
 /*!
- * Playes the title with index title_no.
+ * Playes the song with index title_no.
  */
 function playTitle(title_no) {
   var audio_obj = document.getElementById ('audio');
@@ -66,19 +72,19 @@ function playTitle(title_no) {
     audio_obj.pause();
     audio_obj.currentTime = 0;
   
-    // un-highlight the current title in the title list
+    // un-highlight the current song in the song list
     var title_old_p = document.getElementById ('title_of_album_' + currently_playing + '_p');
     title_old_p.innerHTML = audio_infos[currently_playing].name;
   }
   
-  // switch to new title
+  // switch to new song
   currently_playing = title_no;
   
-  // set audio_source to src of current title index
+  // set audio_source to src of current song index
   var audio_source = document.getElementById ('audio_source');
   audio_source.src = audio_infos[currently_playing].src;
   
-  // highlight the title in the title list
+  // highlight the song in the song list
   var title_p = document.getElementById ('title_of_album_' + title_no + '_p');
   title_p.innerHTML = "<b>" + audio_infos[currently_playing].name + "</b>";
   
@@ -88,19 +94,19 @@ function playTitle(title_no) {
   // play audio
   audio_obj.play ();
   
-  // make sure that the current title is centered (if possible)
+  // make sure that the current song is centered (if possible)
   scrollToTitle(currently_playing);
 }
 
 /*!
- * Playes the next title.
+ * Playes the next song.
  */
 function playNext() {
   playTitle((currently_playing + 1) % num_titles);
 }
 
 /*!
- * Centers (if possible) title no. title_no.
+ * Centers (if possible) song no. title_no.
  */
 function scrollToTitle(title_no) {
   var titlesDiv = document.getElementById('list_of_titles');
@@ -111,13 +117,13 @@ function scrollToTitle(title_no) {
   var currentTitle = document.getElementById('title_of_album_' + title_no);
   var currentTitleHeight = currentTitle.clientHeight;
   
-  // absolute y pos of first title
+  // absolute y pos of first song
   var y0 = firstTitle.offsetTop;
   
-  // relative y pos of current title
+  // relative y pos of current song
   var yActualRel = currentTitle.offsetTop - y0;
   
-  // target relative y pos of current title is in the middle of the div, helf title height above
+  // target relative y pos of current song is in the middle of the div, helf song height above
   var yTargetRel = titlesDiv.clientHeight / 2 - currentTitle.clientHeight / 2;
   
   // calculate transformation from yActualRel to yTargetRel
@@ -199,7 +205,7 @@ function updateTime() {
           </div>
           <div id="album_info" class="album_info_cls">
     """
-    html += "          <p>" + album + "</p>\n"
+    html += "          <p>" + relativeDirectory + "</p>\n"
     html += """
           </div>
           <div id="time" class="time_cls">
@@ -212,15 +218,15 @@ function updateTime() {
     background1 = "#FFC0C0"
     background2 = "#C0C0FF"
     
-    for i in range(len(titles)):
-        title = titles[i]
+    for i in range(len(songs)):
+        song = songs[i]
         if (i % 2 == 0):
             background = background1
         else:
             background = background2
         
         html += "<div id=\"title_of_album_" + str(i) + "\" class=\"title_of_album_cls\" style=\"background: " + background + "\" onclick=\"playTitle(" + str(i) + ")\">\n"
-        html += "  <p id=\"title_of_album_" + str(i) + "_p\">" + title + "</p>\n"
+        html += "  <p id=\"title_of_album_" + str(i) + "_p\">" + song + "</p>\n"
         html += "</div>\n"
     
     html += """
@@ -229,7 +235,7 @@ function updateTime() {
           <p>
             <audio controls id="audio" style="width: 99%;">
     """
-    html += "              <source id=\"audio_source\" src=\"" + Utility.getTitleURL(album, titles[0]) + "\" type=\"audio/ogg\">\n"
+    html += "              <source id=\"audio_source\" src=\"" + Utility.getSongURL(relativeDirectory, songs[0]) + "\" type=\"audio/ogg\">\n"
     html += """
             </audio>
           </p>

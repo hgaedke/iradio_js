@@ -3,32 +3,32 @@ import Utility
 import PlayAlbum
 
 
-def musicFolders(musicDir, folderPath):
+def musicFolders(musicDir, relativeDirectory):
     '''
-    Shows a folder view, if folderPath contains at least 1 folder. Otherwise shows a play album view.
+    Shows a folder view, if relativeDirectory contains at least 1 directory. Otherwise shows a play album view.
     
     param musicDir Path to the global music directory.
-    param folderPath Relative path from global music directory to the folder which contents shall be shown.
+    param relativeDirectory Relative path from global music directory to the directory which contents shall be shown.
     '''
     # contains only folders? => folder view
     # else => playable view
-    (dirs, files) = Utility.getDirectoryContents(musicDir + "/" + folderPath)
+    (dirs, files) = Utility.getDirectoryContents(musicDir + "/" + relativeDirectory)
     if dirs:
-        return musicFolderView(musicDir, folderPath)
+        return musicFolderView(musicDir, relativeDirectory)
     else:
-        return PlayAlbum.create(musicDir, folderPath)
+        return PlayAlbum.create(musicDir, relativeDirectory)
         
 
-def musicFolderView(musicDir, folderPath):
+def musicFolderView(musicDir, relativeDirectory):
     '''
-    Shows a folder view for musicDir + "/" + folderPath.
+    Shows a folder view for musicDir + "/" + relativeDirectory.
     
     param musicDir Path to the global music directory.
-    param folderPath Relative path from global music directory to the folder which contents shall be shown.
+    param relativeDirectory Relative path from global music directory to the folder which contents shall be shown.
     '''
     
     # get contained folders (files are irrelevant)
-    (dirs, files) = Utility.getDirectoryContents(musicDir + "/" + folderPath)
+    (dirs, files) = Utility.getDirectoryContents(musicDir + "/" + relativeDirectory)
     
     # === HTML output ===
     html = """
@@ -65,7 +65,7 @@ function backToParentDir() {
     """
     
     # back button (if not root)
-    if folderPath != ".":
+    if relativeDirectory != ".":
         html += """
             <div id="back_button">
               <div id="back" class="back_button_cls" onclick="backToParentDir()">
@@ -84,11 +84,11 @@ function backToParentDir() {
         else:
             background = background2
         
-        urlOpenFolder = "/music/openFolder?folderPath=" + folderPath + "/" + directory
+        urlShowFolder = "/music/showFolder?relativeDirectory=" + relativeDirectory + "/" + directory
         
         html += "<div id=\"div_folder_" + str(i) + "\">\n"
         # note that using " instead of ' is your DEATH!
-        html += "  <div class=\"open_folder_button_cls\" style=\"float: left; background: " + background + "\" onclick=\"openURL('" + urlOpenFolder + "')\">\n"
+        html += "  <div class=\"open_folder_button_cls\" style=\"float: left; background: " + background + "\" onclick=\"openURL('" + urlShowFolder + "')\">\n"
         html += "    <p>" + directory + "</p>\n"
         html += "  </div>\n"
         html += "</div>\n"
@@ -99,7 +99,7 @@ function backToParentDir() {
     
 def video(mediaServer):
     # get videos in reverse order, so that the newest (assuming date in front) is shown first
-    videos = Utility.getSortedListOfVideos(videoDir = mediaServer.videoDir, reverse = True)
+    (dirs, videos) = Utility.getDirectoryContents(mediaServer.videoDir, reverse = True)
     
     # === HTML output ===
     html = """
