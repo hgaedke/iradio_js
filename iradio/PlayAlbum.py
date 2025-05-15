@@ -3,12 +3,13 @@ import Utility
 
 def create(mediaDir, relativeDirectory):
     '''
-    Returns a HTML page for playing the audio files contained in relativeDirectory.
+    @return a HTML page for playing the audio files contained in relativeDirectory.
     
-    param mediaDir Absolute path of the media root directory.
-    param relativeDirectory Path of the directory to play files from, relative to the root media directory.
+    @param mediaDir Absolute path of the media root directory.
+    @param relativeDirectory Path of the directory to play files from, relative to the root media directory.
     '''
     (dirs, songs) = Utility.getDirectoryContents(mediaDir + "/" + relativeDirectory)
+    albumName = extractAlbumNameFromPath(relativeDirectory)
     
     # === HTML output ===
     html = """
@@ -205,7 +206,7 @@ function updateTime() {
           </div>
           <div id="album_info" class="album_info_cls">
     """
-    html += "          <p>" + relativeDirectory + "</p>\n"
+    html += "          <p>" + albumName + "</p>\n"
     html += """
           </div>
           <div id="time" class="time_cls">
@@ -245,3 +246,12 @@ function updateTime() {
     """
     
     return html
+    
+    
+def extractAlbumNameFromPath(directory):
+    '''
+    @return The substring of directory representing the part after the last slash.
+    @param directory A directory path.
+    '''
+    indexSlash = directory.rfind("/")
+    return directory[indexSlash + 1 : len(directory)]
