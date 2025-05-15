@@ -130,8 +130,14 @@ function scrollToTitle(title_no) {
 /*!
  * Shows the index page.
  */
-function backToIndex() {
-  window.location = "/music";
+function backToParentDir() {
+  url = String(window.location);
+  let indexSlash = url.lastIndexOf("/");
+  if (indexSlash != -1) {
+    url = url.substring(0, indexSlash);
+  }
+  
+  window.location = url;
 }
 
 /*!
@@ -188,7 +194,7 @@ function updateTime() {
           <p>App: Local Music</p>
         </div>
         <div id="back_and_album">
-          <div id="back" class="back_button_cls" onclick="backToIndex()">
+          <div id="back" class="back_button_cls" onclick="backToParentDir()">
             <p><img src="/images/back.png" height="60"></p>
           </div>
           <div id="album_info" class="album_info_cls">

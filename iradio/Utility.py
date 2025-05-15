@@ -29,6 +29,22 @@ def genericFooter():
     return html
     
     
+def getDirectoryContents(musicDir):
+    """
+    Returns (list of contained dirs, list of contained files).
+    """
+    dirs = []
+    files = []
+    for content in os.listdir(musicDir):
+        if os.path.isdir(musicDir + "/" + content):
+            dirs.append(content)
+        if os.path.isfile(musicDir + "/" + content):
+            files.append(content)
+    dirs.sort()
+    files.sort()
+    return (dirs, files)
+    
+    
 def getSortedListOfAlbums(musicDir):
     """
     Example call: localhost:5000/music/albums

@@ -46,13 +46,25 @@ class MediaServer:
         return flask.send_from_directory(MediaServer.INSTANCE.codeDir + "/images", "back.png")
         
         
-    @FLASK_APP.route('/music')
-    def music():
+    @FLASK_APP.route('/musicFolders')
+    def musicFolders():
         """
         Returns a HTML page showing all music albums.
         """
+        return Index.musicFolders(MediaServer.INSTANCE.musicDir, folderPath = ".")
         
-        return Index.music(MediaServer.INSTANCE)
+        
+    @FLASK_APP.route('/music/openFolder')
+    def openFolder():
+        """
+        Returns a HTML page which shows a folder or play view, depending on the folder contents.
+        
+        Example call: localhost:5000/music/openFolder?folderPath=./80er
+        """
+        argDict = flask.request.args
+        folderPath = argDict["folderPath"]
+        
+        return Index.musicFolders(MediaServer.INSTANCE.musicDir, folderPath = folderPath)
         
         
     @FLASK_APP.route('/music/playAlbum')

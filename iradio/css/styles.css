@@ -130,6 +130,19 @@ p {
 
 /* Index */
 
+.open_folder_button_cls {
+  display: table;
+  width: 99%;
+  height: 20vh;
+}
+
+.open_folder_button_cls p {
+  display: table-cell;
+  color: black;
+  text-align: center;
+  vertical-align: middle;
+}
+
 .album_play_button_cls {
   display: table;
   width: 99%;
