@@ -51,8 +51,8 @@ function openURL (url) {
     return html
     
 def video(mediaServer):
-    # get videos
-    videos = Utility.getSortedListOfVideos(mediaServer.videoDir)
+    # get videos in reverse order, so that the newest (assuming date in front) is shown first
+    videos = Utility.getSortedListOfVideos(videoDir = mediaServer.videoDir, reverse = True)
     
     # === HTML output ===
     html = """

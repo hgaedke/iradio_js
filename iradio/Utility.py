@@ -60,8 +60,11 @@ def getTitleURL(album, title):
     return "/music/title?album=" + album + "&title=" + title
     
     
-def getSortedListOfVideos(videoDir):
+def getSortedListOfVideos(videoDir, reverse):
     """
+    Returns a sorted array of videos.
+    param videoDir the directory where the videos are in.
+    param reverse If true, sorting is done in reverse order.
     Example call: localhost:5000/video
     """
     # get list of files in current directory
@@ -69,7 +72,7 @@ def getSortedListOfVideos(videoDir):
     for (dirpath, dirnames, filenames) in os.walk(videoDir):
         videos.extend(filenames)
         break
-    videos.sort()
+    videos.sort(reverse = reverse)
     return videos
     
     
