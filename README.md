@@ -20,7 +20,7 @@ In addition to the previous steps:
 * Copy MP3 music files of your choice to the music folder, where each music file needs to be located in an album directory, e.g. "c:\iradio_js\music\my_album\my_music.mp3". You can have multiple files per album and multiple albums as well.
 * Start the Python- and FLASK-based MediaServer:  
     python "c:\iradio_js\iradio\MediaServer.py" "c:\iradio_js\iradio\music" "c:\iradio_js\iradio\video"  
-* Open "c:\iradio_ja\iradio\home.html" in your local browser.
+* Open "c:\iradio_js\iradio\home.html" in your local browser.
 * Click on the flash button in the left toolbar to show your music albums. Click on an album to enter it and to play the music inside.
 * Click on the play button in the left toolbar to show your videos. Use the HTML media controls to start/stop a video. Scroll down to see the other videos.
 
